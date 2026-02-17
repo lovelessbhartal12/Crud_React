@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
+import { nanoid } from "nanoid";
+import Form from "./components/Form";
+
 import Items from "./components/Items";
 import { groceryItems } from "./data/groceryItems";
 import { ToastContainer, toast } from "react-toastify";
@@ -24,6 +27,16 @@ function App() {
     const newItems = items.filter((item) => item.id !== itemId);
     setItems(newItems);
     toast.success("item deleted");
+  };
+  const addItem = (itemName) => {
+    const newItem = {
+      name: itemName,
+      completed: false,
+      id: nanoid(),
+    };
+    const newItems = [...items, newItem];
+    setItems(newItems);
+    toast.success("grocery item added");
   };
 
   return (
