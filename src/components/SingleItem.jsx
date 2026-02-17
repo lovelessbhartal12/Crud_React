@@ -1,10 +1,14 @@
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import "./SingleItem.css";
 
-const SingleItem = ({ item }) => {
+const SingleItem = ({ item, editcompleted }) => {
   return (
     <div className="single-item">
-      <input type="checkbox" checked={item.completed} onChange={() => null} />
+      <input
+        type="checkbox"
+        checked={item.completed}
+        onChange={() => editcompleted(item.id)}
+      />
       <p
         style={{
           textTransform: "capitalize",
