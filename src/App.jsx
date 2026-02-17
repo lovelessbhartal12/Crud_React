@@ -1,9 +1,11 @@
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
-import "./App.css";
 import Items from "./components/Items";
 import { groceryItems } from "./data/groceryItems";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "./App.css";
 
 function App() {
   const [items, setItems] = useState(groceryItems);
@@ -18,32 +20,22 @@ function App() {
     setItems(newItems);
   };
 
+  const removeItem = (itemId) => {
+    const newItems = items.filter((item) => item.id !== itemId);
+    setItems(newItems);
+    toast.success("item deleted");
+  };
+
   return (
-    <>
-      <div>
-        <section className="section-center">
-          <Items items={items} editCompleted={editCompleted} />
-        </section>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <section className="section-center">
+      <ToastContainer position="top-center" />
+      <Items items={items} editCompleted={editCompleted} />
+      <Items
+        items={items}
+        editCompleted={editCompleted}
+        removeItem={removeItem}
+      />
+    </section>
   );
 }
 
