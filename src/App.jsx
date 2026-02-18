@@ -12,7 +12,17 @@ import "./App.css";
 
 function App() {
   const [items, setItems] = useState(groceryItems);
+  const [editId, setEditId] = useState(null);
+  const inputRef = useRef(null);
+
   const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (editId && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [editId]);
+
   const editCompleted = (itemId) => {
     const newItems = items.map((item) => {
       if (item.id === itemId) {
@@ -39,14 +49,34 @@ function App() {
     toast.success("grocery item added");
   };
 
+  const updateItemName = (newName) => {
+    const newItems = items.map((item) => {
+      if (item.id === editId) {
+        return { ...item, name: newName };
+      }
+      return item;
+    });
+    setItems(newItems);
+    setEditId(null);
+    toast.success("item updated");
+  };
+
   return (
     <section className="section-center">
       <ToastContainer position="top-center" />
       <Items items={items} editCompleted={editCompleted} />
+      <Form
+        addItem={addItem}
+        updateItemName={updateItemName}
+        editItemId={editId}
+        itemToEdit={items.find((item) => item.id === editId)}
+        inputRef={inputRef}
+      />
       <Items
         items={items}
         editCompleted={editCompleted}
         removeItem={removeItem}
+        setEditId={setEditId}
       />
     </section>
   );
