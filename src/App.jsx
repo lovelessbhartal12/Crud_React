@@ -1,11 +1,8 @@
-import { useState, useEffect, useRef } from "react";
-import reactLogo from "./assets/react.svg";
-// import viteLogo from "/vite.svg";
-import { nanoid } from "nanoid";
-import Form from "./components/Form";
-
 import Items from "./components/Items";
 // import { groceryItems } from "./data/groceryItems";
+import { useState, useEffect, useRef } from "react";
+import { nanoid } from "nanoid";
+import Form from "./components/Form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
@@ -22,12 +19,12 @@ const setLocalStorage = (items) => {
   localStorage.setItem("grocery-list", JSON.stringify(items));
 };
 
-function App() {
+const initialList = getLocalStorage();
+
+const App = () => {
   const [items, setItems] = useState(initialList);
   const [editId, setEditId] = useState(null);
   const inputRef = useRef(null);
-
-  const [count, setCount] = useState(0);
 
   useEffect(() => {
     if (editId && inputRef.current) {
@@ -42,8 +39,8 @@ function App() {
       }
       return item;
     });
-    setItems(newItems);
     setLocalStorage(newItems);
+    setItems(newItems);
   };
 
   const removeItem = (itemId) => {
@@ -52,6 +49,7 @@ function App() {
     setLocalStorage(newItems);
     toast.success("item deleted");
   };
+
   const addItem = (itemName) => {
     const newItem = {
       name: itemName,
@@ -80,7 +78,6 @@ function App() {
   return (
     <section className="section-center">
       <ToastContainer position="top-center" />
-      <Items items={items} editCompleted={editCompleted} />
       <Form
         addItem={addItem}
         updateItemName={updateItemName}
@@ -96,6 +93,6 @@ function App() {
       />
     </section>
   );
-}
+};
 
 export default App;

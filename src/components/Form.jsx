@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import "./Form.css";
 
 const Form = ({
   addItem,
-  updateItemName,
   editItemId,
+  updateItemName,
   itemToEdit,
   inputRef,
 }) => {
@@ -24,6 +24,9 @@ const Form = ({
     if (!newItemName) {
       toast.error("please provide value");
       return;
+    }
+    if (editItemId) {
+      updateItemName(newItemName);
     } else {
       addItem(newItemName);
     }
@@ -38,7 +41,8 @@ const Form = ({
           type="text"
           className="form-input"
           value={newItemName}
-          placeholder="e.g. eggs"
+          ref={inputRef}
+          placeholder="e.g. Bread"
           onChange={(event) => setNewItemName(event.target.value)}
         />
         <button type="submit" className="btn">
